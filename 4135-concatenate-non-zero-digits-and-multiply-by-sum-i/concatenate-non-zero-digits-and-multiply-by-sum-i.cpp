@@ -1,17 +1,19 @@
 class Solution {
 public:
     long long sumAndMultiply(int n) {
+        int place = 1;
         long long x = 0;
         int sum = 0;
-        long long place = 1;
 
         while (n > 0) {
             int digit = n % 10;
+
             if (digit != 0) {
-                x += digit * place;
-                place *= 10;
+                x += 1LL * digit * place;
                 sum += digit;
+                place *= 10;
             }
+
             n /= 10;
         }
 
