@@ -2,29 +2,31 @@ class Solution {
 public:
     int ans = INT_MAX;
 
-    void dfs(int node, vector<vector<pair<int,int>>> &adj, vector<int> &vis) {
-        vis[node] = 1;
+    void dfs(int node, vector<vector<pair<int, int>>>& adj, vector<bool>& vis) {
+        vis[node] = true;
 
-        for (auto &it : adj[node]) {
-            ans = min(ans, it.second);
+        for (auto& [next, dist] : adj[node]) {
+            ans = min(ans, dist);
 
-            if (!vis[it.first]) {
-                dfs(it.first, adj, vis);
+            if (!vis[next]) {
+                dfs(next, adj, vis);
             }
         }
     }
 
     int minScore(int n, vector<vector<int>>& roads) {
+        vector<vector<pair<int, int>>> adj(n + 1);
 
-        vector<vector<pair<int,int>>> adj(n + 1);
+        for (auto& road : roads) {
+            int u = road[0];
+            int v = road[1];
+            int d = road[2];
 
-        for (auto &road : roads) {
-            adj[road[0]].push_back({road[1], road[2]});
-            adj[road[1]].push_back({road[0], road[2]});
+            adj[u].push_back({v, d});
+            adj[v].push_back({u, d});
         }
 
-        vector<int> vis(n + 1, 0);
-
+        vector<bool> vis(n + 1, false);
         dfs(1, adj, vis);
 
         return ans;
