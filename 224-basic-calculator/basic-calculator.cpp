@@ -1,30 +1,31 @@
 class Solution {
 public:
     int calculate(string s) {
-
         stack<long long> st;
-        long long result = 0, number = 0;
-        int sign = 1;
 
-        for(char c : s){
+        long long result = 0;
+        long long num = 0;
+        long long sign = 1;
 
-            if(isdigit(c)){
-                number = number * 10 + (c - '0');
+        for (int i = 0; i < s.size(); i++) {
+
+            if (isdigit(s[i])) {
+                num = num * 10 + (s[i] - '0');
             }
 
-            else if(c == '+'){
-                result += sign * number;
-                number = 0;
+            else if (s[i] == '+') {
+                result += sign * num;
+                num = 0;
                 sign = 1;
             }
 
-            else if(c == '-'){
-                result += sign * number;
-                number = 0;
+            else if (s[i] == '-') {
+                result += sign * num;
+                num = 0;
                 sign = -1;
             }
 
-            else if(c == '('){
+            else if (s[i] == '(') {
                 st.push(result);
                 st.push(sign);
 
@@ -32,20 +33,22 @@ public:
                 sign = 1;
             }
 
-            else if(c == ')'){
-                result += sign * number;
-                number = 0;
+            else if (s[i] == ')') {
+                result += sign * num;
+                num = 0;
 
-                result *= st.top();
+                long long prevSign = st.top();
                 st.pop();
 
-                result += st.top();
+                long long prevResult = st.top();
                 st.pop();
+
+                result = prevResult + prevSign * result;
             }
         }
 
-        result += sign * number;
+        result += sign * num;
 
-        return result;
+        return (int)result;
     }
 };
